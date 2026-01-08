@@ -657,3 +657,91 @@ function newOrder() {
         window.location.reload();
     }
 }
+
+// INITIALIZATION - Avec debug visible sur mobile
+document.addEventListener('DOMContentLoaded', function() {
+    alert('🔍 DEBUG: Page chargée, script démarré !');
+    
+    console.log('DOM loaded, initializing app...');
+    currentPage = 1;
+    updateUI();
+    
+    // Get buttons
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const backBtn = document.querySelector('.back-btn');
+    
+    if (!nextBtn) {
+        alert('❌ ERREUR: Bouton Suivant introuvable !');
+        console.error('Next button not found');
+        return;
+    }
+    
+    if (!prevBtn) {
+        alert('❌ ERREUR: Bouton Précédent introuvable !');
+        console.error('Previous button not found');
+        return;
+    }
+    
+    alert('✅ DEBUG: Boutons trouvés ! Installation des événements...');
+    console.log('Next button found:', nextBtn);
+    console.log('Previous button found:', prevBtn);
+    
+    // Next button - CLICK
+    nextBtn.addEventListener('click', function(e) {
+        alert('👆 CLICK détecté sur Suivant !');
+        console.log('Next button clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        nextPage();
+    });
+    
+    // Next button - TOUCH
+    nextBtn.addEventListener('touchend', function(e) {
+        alert('👆 TOUCH détecté sur Suivant !');
+        console.log('Next button touched');
+        e.preventDefault();
+        e.stopPropagation();
+        nextPage();
+    });
+    
+    // Previous button - CLICK
+    prevBtn.addEventListener('click', function(e) {
+        alert('👆 CLICK détecté sur Précédent !');
+        console.log('Previous button clicked');
+        e.preventDefault();
+        e.stopPropagation();
+        previousPage();
+    });
+    
+    // Previous button - TOUCH
+    prevBtn.addEventListener('touchend', function(e) {
+        alert('👆 TOUCH détecté sur Précédent !');
+        console.log('Previous button touched');
+        e.preventDefault();
+        e.stopPropagation();
+        previousPage();
+    });
+    
+    // Back button
+    if (backBtn) {
+        console.log('Back button found:', backBtn);
+        
+        backBtn.addEventListener('click', function(e) {
+            console.log('Back button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            goBack();
+        });
+        
+        backBtn.addEventListener('touchend', function(e) {
+            console.log('Back button touched');
+            e.preventDefault();
+            e.stopPropagation();
+            goBack();
+        });
+    }
+    
+    alert('✅ DEBUG: Événements installés ! Testez maintenant.');
+    console.log('Event listeners attached successfully');
+});
