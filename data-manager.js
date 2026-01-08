@@ -52,8 +52,8 @@ class DataManager {
                     { id: 8, nom: 'Aubergine Grillée Concassée de Poivrons Féta', categorie: 'sandwich', prix: 0, image: 'https://images.unsplash.com/photo-1592415499556-e14a0c370d71?w=400&h=300&fit=crop', actif: true },
                     { id: 9, nom: 'Bacon Cheddar Oignons Frits', categorie: 'sandwich', prix: 0, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop', actif: true },
                     // Bases salades
-                    { id: 10, nom: 'Semoule', categorie: 'base-salade', prix: 0, image: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop', actif: true },
-                    { id: 11, nom: 'Lentilles', categorie: 'base-salade', prix: 0, image: 'https://images.unsplash.com/photo-1585069107103-bb8c85e4f8b8?w=400&h=300&fit=crop', actif: true },
+                    { id: 10, nom: 'Semoule', categorie: 'base-salade', prix: 0, image: 'https://images.unsplash.com/photo-1569562211093-4ed0d0758f12?w=400&h=300&fit=crop', actif: true },
+                    { id: 11, nom: 'Lentilles', categorie: 'base-salade', prix: 0, image: 'https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400&h=300&fit=crop', actif: true },
                     // Garnitures salades
                     { id: 12, nom: 'Poulet', categorie: 'garniture-salade', prix: 0, image: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=400&h=300&fit=crop', actif: true },
                     { id: 13, nom: 'Jambon Emmental', categorie: 'garniture-salade', prix: 0, image: 'https://images.unsplash.com/photo-1528736235302-52922df5c122?w=400&h=300&fit=crop', actif: true },
