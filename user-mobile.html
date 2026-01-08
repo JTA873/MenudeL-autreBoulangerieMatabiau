@@ -391,6 +391,10 @@
             cursor: pointer;
             transition: all 0.2s ease;
             min-height: 52px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .btn-primary {
@@ -400,9 +404,11 @@
             border-color: #8B7355;
         }
 
-        .btn-primary:hover {
+        .btn-primary:active,
+        .btn-primary:focus {
             background: #6B5D52;
             border-color: #6B5D52;
+            outline: none;
         }
 
         .btn-primary:disabled {
@@ -417,8 +423,10 @@
             min-width: 52px;
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:active,
+        .btn-secondary:focus {
             background: #F5F1ED;
+            outline: none;
         }
 
         .btn:active:not(:disabled) {
