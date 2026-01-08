@@ -8,7 +8,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function(){
-            emailjs.init("YOUR_PUBLIC_KEY"); // À remplacer par votre clé publique EmailJS
+            emailjs.init("xfWDumGsDD1rqIPiy"); // À remplacer par votre clé publique EmailJS
         })();
     </script>
     <style>
@@ -905,7 +905,6 @@
             }
             
             const templateParams = {
-                to_email: 'jadetaraf@hotmail.fr',
                 order_number: orderNumber,
                 date: dateStr,
                 time: timeStr,
@@ -920,7 +919,7 @@
             };
             
             // Envoi de l'email via EmailJS
-            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+            emailjs.send('service_j6gjv9k', 'template_05z813q', templateParams)
                 .then(function(response) {
                     console.log('Email envoyé avec succès!', response.status, response.text);
                 }, function(error) {
