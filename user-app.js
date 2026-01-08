@@ -258,19 +258,25 @@ function loadMenuCards() {
     
     let html = '';
     
-    // Menus standards
+    // Menus standards - uniquement les disponibles
     menus.forEach(menu => {
-        html += `
-            <div class="card ${order.menu?.id === menu.id ? 'selected' : ''}" 
-                 onclick="selectMenu(${menu.id}, 'menu')">
-                <img src="${menu.image}" alt="${menu.nom}" class="card-image">
-                <div class="card-content">
-                    <div class="card-title">${menu.nom}</div>
-                    <div class="card-price">${menu.prix.toFixed(2)}€</div>
-                    <div class="card-description">${menu.description}</div>
+        // Vérifier la disponibilité (stock)
+        if (menu.actif && (menu.stock === null || menu.stock > 0)) {
+            html += `
+                <div class="card ${order.menu?.id === menu.id ? 'selected' : ''}" 
+                     onclick="selectMenu(${menu.id}, 'menu')">
+                    <img src="${menu.image}" alt="${menu.nom}" class="card-image">
+                    <div class="card-content">
+                        <div class="card-title">${menu.nom}</div>
+                        <div class="card-price">${menu.prix.toFixed(2)}€</div>
+                        <div class="card-description">${menu.description}</div>
+                        ${menu.stock !== null && menu.stock <= 5 ? 
+                            `<div style="font-size: 0.8em; color: #E67E00; margin-top: 4px;">Plus que ${menu.stock} disponible${menu.stock > 1 ? 's' : ''}</div>` 
+                            : ''}
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
     });
     
     // Option à la carte
@@ -533,6 +539,26 @@ function displaySummary() {
 function validateOrder() {
     document.getElementById('loading').classList.add('active');
     
+    // Décrémenter les stocks des produits commandés
+    if (order.menu && order.menu.id > 0) {
+        dataManager.decrementStock('menus', order.menu.id);
+    }
+    if (order.plat && order.plat.id) {
+        dataManager.decrementStock('plats', order.plat.id);
+    }
+    if (order.base && order.base.id) {
+        dataManager.decrementStock('plats', order.base.id);
+    }
+    if (order.garniture && order.garniture.id) {
+        dataManager.decrementStock('plats', order.garniture.id);
+    }
+    if (order.dessert && order.dessert.id) {
+        dataManager.decrementStock('desserts', order.dessert.id);
+    }
+    if (order.boisson && order.boisson.id) {
+        dataManager.decrementStock('boissons', order.boisson.id);
+    }
+    
     // Sauvegarder la commande
     const savedOrder = dataManager.addOrder({
         client: order.client,
@@ -576,7 +602,7 @@ function sendEmailNotification(savedOrder) {
         total: order.total.toFixed(2)
     };
     
-    emailjs.send('service_of0ird2', 'template_05z813q', templateParams)
+    emailjs.send('service_of0ird2', 'VOTRE_NOUVEAU_TEMPLATE_ID', templateParams)
         .then(response => {
             console.log('Email envoyé:', response);
         })

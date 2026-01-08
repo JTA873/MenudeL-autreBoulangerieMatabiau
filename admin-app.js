@@ -14,6 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMenus();
     loadStats();
     loadOrders();
+    
+    // Gestionnaire d'upload d'image
+    const imageFileInput = document.getElementById('productImageFile');
+    const imageUrlInput = document.getElementById('productImage');
+    const imagePreview = document.getElementById('imagePreview');
+    
+    if (imageFileInput) {
+        imageFileInput.addEventListener('change', handleImageUpload);
+    }
+    
+    if (imageUrlInput) {
+        imageUrlInput.addEventListener('input', handleImageUrl);
+    }
 });
 
 // Navigation entre tabs
@@ -54,12 +67,16 @@ function loadMenus() {
     
     let html = '';
     menus.forEach(menu => {
+        const stockDisplay = getStockDisplay(menu.stock);
+        const isOutOfStock = menu.stock !== null && menu.stock <= 0;
+        
         html += `
-            <div class="product-card">
+            <div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}">
                 <img src="${menu.image}" alt="${menu.nom}">
                 <div class="product-card-body">
                     <div class="product-card-title">${menu.nom}</div>
                     <div class="product-card-price">${menu.prix.toFixed(2)}€</div>
+                    ${stockDisplay}
                     ${menu.description ? `<p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">${menu.description}</p>` : ''}
                     <div class="product-card-actions">
                         <button class="btn-edit" onclick="editMenu(${menu.id})">✏️ Modifier</button>
@@ -300,13 +317,15 @@ function saveProduct() {
     const nom = document.getElementById('productNom').value.trim();
     const prix = parseFloat(document.getElementById('productPrix').value) || 0;
     const image = document.getElementById('productImage').value.trim() || 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop';
+    const stockInput = document.getElementById('productStock').value;
+    const stock = stockInput === '' || stockInput === null ? null : parseInt(stockInput);
     
     if (!nom) {
         alert('Le nom est obligatoire');
         return;
     }
     
-    const product = { nom, prix, image, actif: true };
+    const product = { nom, prix, image, stock, actif: true };
     
     // Champs spécifiques
     if (category === 'menu') {
@@ -509,7 +528,69 @@ function confirmResetData() {
         }
     }
 }
+// GESTION DES IMAGES
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
+    // Vérifier que c'est bien une image
+    if (!file.type.startsWith('image/')) {
+        alert('Veuillez sélectionner un fichier image');
+        return;
+    }
+
+    // Vérifier la taille (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+        alert('L\'image est trop volumineuse (max 2MB)');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64Image = e.target.result;
+        document.getElementById('productImage').value = base64Image;
+        showImagePreview(base64Image);
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleImageUrl(event) {
+    const url = event.target.value;
+    if (url) {
+        showImagePreview(url);
+    } else {
+        document.getElementById('imagePreview').innerHTML = '';
+    }
+}
+
+function showImagePreview(imageSrc) {
+    const preview = document.getElementById('imagePreview');
+    if (imageSrc) {
+        preview.innerHTML = `
+            <img src="${imageSrc}" 
+                 style="max-width: 200px; max-height: 120px; object-fit: cover; border-radius: 6px; border: 1px solid #E8E5E1;" 
+                 onerror="this.style.display='none'; this.nextSibling.style.display='block';">
+            <div style="display: none; color: #C94E3A; font-size: 0.9em; margin-top: 8px;">
+                Erreur de chargement de l'image
+            </div>
+        `;
+    } else {
+        preview.innerHTML = '';
+    }
+}
+
+// GESTION DU STOCK
+function getStockDisplay(stock) {
+    if (stock === null) {
+        return '<div style="font-size: 0.85em; color: #6B9D7B; margin-bottom: 8px;">♾️ Stock illimité</div>';
+    } else if (stock === 0) {
+        return '<div style="font-size: 0.85em; color: #C94E3A; margin-bottom: 8px; font-weight: 600;">❌ Rupture de stock</div>';
+    } else if (stock <= 5) {
+        return `<div style="font-size: 0.85em; color: #E67E00; margin-bottom: 8px; font-weight: 500;">⚠️ Stock faible: ${stock}</div>`;
+    } else {
+        return `<div style="font-size: 0.85em; color: #6B9D7B; margin-bottom: 8px;">📦 Stock: ${stock}</div>`;
+    }
+}
 // ===== DECONNEXION =====
 function logout() {
     if (confirm('Voulez-vous vous déconnecter ?')) {
