@@ -19,9 +19,63 @@ const order = {
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing...');
+    
     // Initialiser la page 1
     currentPage = 1;
     updateUI();
+    
+    // Attacher les event listeners
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const backBtn = document.querySelector('.back-btn');
+    
+    if (nextBtn) {
+        console.log('Next button found, attaching listener');
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Next button clicked');
+            nextPage();
+        });
+        
+        // Touch events for mobile
+        nextBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Next button touched');
+            nextPage();
+        });
+    } else {
+        console.error('Next button not found!');
+    }
+    
+    if (prevBtn) {
+        console.log('Previous button found, attaching listener');
+        prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Previous button clicked');
+            previousPage();
+        });
+        
+        prevBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Previous button touched');
+            previousPage();
+        });
+    } else {
+        console.error('Previous button not found!');
+    }
+    
+    if (backBtn) {
+        backBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            goBack();
+        });
+    }
 });
 
 // Navigation
@@ -163,12 +217,12 @@ function updateUI() {
     }
     
     // Gérer le bouton précédent (masquer sur page 1)
-    const prevBtn = bottomActions?.querySelector('.btn-secondary');
-    if (prevBtn) {
+    const prevBtnInActions = document.getElementById('prevBtn');
+    if (prevBtnInActions) {
         if (currentPage === 1) {
-            prevBtn.style.visibility = 'hidden';
+            prevBtnInActions.style.visibility = 'hidden';
         } else {
-            prevBtn.style.visibility = 'visible';
+            prevBtnInActions.style.visibility = 'visible';
         }
     }
     
