@@ -244,7 +244,7 @@
         <p class="subtitle">Toulouse - Commande à emporter</p>
         
         <div class="btn-group">
-            <a href="user-mobile.html" class="btn btn-primary">
+            <a href="./user-mobile.html" class="btn btn-primary">
                 <span class="btn-icon">📱</span>
                 <span>Commander</span>
             </a>
@@ -316,7 +316,7 @@
             if (password === savedPin) {
                 // Créer une session admin
                 sessionStorage.setItem('admin_auth', 'true');
-                window.location.href = 'admin.html';
+                window.location.href = './admin.html';
             } else {
                 const errorMsg = document.getElementById('errorMessage');
                 errorMsg.style.display = 'block';
